@@ -1,4 +1,11 @@
 # Project Ideas
+- Multi drone coordination challenge
+- AR pilot challenge
+- Obstacle avoidance with drones
+- UX challenge
+- Robotics localization
+- Balloon challenge
+
 
 ## Edge Systems
 - Vision.. distribute video and track objects, because your enemy is time
@@ -30,6 +37,11 @@
 
 ## CONDOR Balloon
 - Erik balloon team... evan and kevin are balloon programs... low cost, smart software, and effects and a lot of low cost balloons to deliver drones at long range distances (range of cruise missile)
+  - 6 hours, 5-20 km altitude... fill system and altitude software.
+  - Integrated software platform for mission planning... what days can we fly on... where do we need to move to hit targets of interest... target analysis... live/historical tracking... command and control
+  - Launch plannning: launch sims and target analysis
+  - Fleet management: live/historical tracking, command and control, steering, sim and targeting 
+
 
 ## Cloud Intelligence
 - Beehive Intelligence System (Front End)
