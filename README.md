@@ -1,10 +1,10 @@
 # Project Ideas
-- Multi drone coordination challenge
-- AR pilot challenge
-- Obstacle avoidance with drones
-- UX challenge
-- Robotics localization
-- Balloon challenge
+- Multi drone coordination challenge - ROBIN
+- AR pilot challenge _SAHA
+- Obstacle avoidance with drones  -TIM
+- UX challenge - RYAN
+- Robotics localization - ANEESH
+- Balloon challenge - ERIK
 
 
 ## Edge Systems
