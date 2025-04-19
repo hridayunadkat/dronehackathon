@@ -1,3 +1,7 @@
+# Drone IDs
+FE03C3
+4A5934
+
 # Live Share
 https://prod.liveshare.vsengsaas.visualstudio.com/join?95AEA4DFEE366DB16A856C7AAFBB4BA56F6E
 
