@@ -1,3 +1,7 @@
+# Notion
+https://elastic-saw-874.notion.site/Robotics-Hackathon-in-San-Francisco-9a9faf87501248668cb834ee8efc8b81
+
+
 # Project Ideas
 - Multi drone coordination challenge - ROBIN
 - AR pilot challenge _SAHA
