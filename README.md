@@ -1,4 +1,4 @@
-## Project Ideas
+# Project Ideas
 
 ## Edge Systems
 - Vision.. distribute video and track objects, because your enemy is time
