@@ -1,3 +1,6 @@
+# Live Share
+https://prod.liveshare.vsengsaas.visualstudio.com/join?95AEA4DFEE366DB16A856C7AAFBB4BA56F6E
+
 # Notion
 https://elastic-saw-874.notion.site/Robotics-Hackathon-in-San-Francisco-9a9faf87501248668cb834ee8efc8b81
 
