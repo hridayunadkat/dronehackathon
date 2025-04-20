@@ -5,6 +5,9 @@ FE03C3
 # Presentation Link
 https://docs.google.com/presentation/d/19lhjknHUNhzmgfsrCQJ9u_OrcttHPKrCrVJiifnT9IY/edit#slide=id.p1
 
+# Presntation script
+https://docs.google.com/document/d/1RJgebDyEUE0m4mgbd__a3XVeZwpS6z87lAlht7Uj8po/edit?tab=t.0
+
 # Notion
 https://elastic-saw-874.notion.site/Robotics-Hackathon-in-San-Francisco-9a9faf87501248668cb834ee8efc8b81
 
