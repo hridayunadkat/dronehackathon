@@ -7,37 +7,68 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            height: 100%;
+            padding: 10px;
+        }
+        .main-container {
+            display: flex;
+            gap: 20px;
+            height: 100%;
+        }
         .video-container {
             position: relative;
             width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
             background-color: #000;
             border-radius: 10px;
             overflow: hidden;
+            flex: 2;
+            height: 100%;
         }
         .video-feed {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: contain;
+        }
+        .right-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-width: 300px;
+            height: 100%;
         }
         .controls {
-            margin-top: 20px;
             padding: 20px;
             background-color: #f8f9fa;
             border-radius: 10px;
+            text-align: center;
         }
         .transcript-container {
-            margin-top: 20px;
             padding: 20px;
             background-color: #f8f9fa;
             border-radius: 10px;
-            min-height: 100px;
+            flex: 1;
+            overflow-y: auto;
         }
         .btn-record {
             width: 50px;
             height: 50px;
             border-radius: 50%;
             margin: 0 10px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-record svg {
+            width: 24px;
+            height: 24px;
         }
         .recording {
             animation: pulse 1.5s infinite;
@@ -47,38 +78,126 @@
             50% { transform: scale(1.1); }
             100% { transform: scale(1); }
         }
+        .joystick-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .joystick-base {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            border: 2px solid #ddd;
+            aspect-ratio: 1;
+        }
+        .amplitude-slider {
+            width: 30px;
+            height: 150px;
+            -webkit-appearance: slider-vertical;
+            writing-mode: bt-lr;
+            margin: 0;
+        }
+        .joystick-handle {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #007bff;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: transform 0.1s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+        .joystick-handle:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        .joystick-values {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -60px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #000;
+            background: #fff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            white-space: nowrap;
+            min-width: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .send-button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .send-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
-    <div class="container py-5">
-        <h1 class="text-center mb-4">Audio Recorder with Video Feed</h1>
-        
-        <div class="video-container">
-            <img id="videoFeed" class="video-feed" alt="Video Feed">
-            <canvas id="clickCanvas" class="video-feed"></canvas>
-        </div>
+    <div class="container">
+        <div class="main-container">
+            <div class="video-container">
+                <img id="videoFeed" class="video-feed" alt="Video Feed">
+            </div>
 
-        <div class="controls text-center mt-4">
-            <button id="startAudio" class="btn btn-primary btn-record">
-                <i class="fas fa-microphone"></i>
-            </button>
-            <button id="stopAudio" class="btn btn-danger btn-record" disabled>
-                <i class="fas fa-stop"></i>
-            </button>
-        </div>
+            <div class="right-column">
+                <div class="controls">
+                    <button id="startAudio" class="btn btn-primary btn-record">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                        </svg>
+                    </button>
+                    <button id="stopAudio" class="btn btn-danger btn-record" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M6 6h12v12H6z"/>
+                        </svg>
+                    </button>
 
-        <div class="transcript-container">
-            <h3>Transcript</h3>
-            <div id="transcript" class="mt-3"></div>
-        </div>
+                    <div class="joystick-container">
+                        <input type="range" class="amplitude-slider" min="0" max="100" value="0" id="amplitudeSlider">
+                        <div class="joystick-base">
+                            <div class="joystick-handle" style="left: 50%; bottom: 0; top: auto;"></div>
+                        </div>
+                        <div class="joystick-values">
+                            Amplitude: <span id="amplitude">0</span> | Angle: <span id="angle">180°</span>
+                            <button class="send-button" id="sendJoystick">Send</button>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="text-center mt-4">
-            <button id="confirm" class="btn btn-success">Confirm</button>
+                <div class="transcript-container">
+                    <h3>Transcript</h3>
+                    <div id="transcript" class="mt-3"></div>
+                </div>
+
+                <div class="text-center">
+                    <button id="confirm" class="btn btn-success">Confirm</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script>
         // Connect to the camera stream server
         const socket = io('http://localhost:5001');
@@ -149,37 +268,161 @@
             alert('Recording confirmed!');
         });
 
-        const canvas = document.getElementById('clickCanvas');
-        const ctx = canvas.getContext('2d');
-        const videoFeed = document.getElementById('videoFeed');
-
-        // Resize canvas to match video feed dimensions
-        videoFeed.onload = () => {
-            canvas.width = videoFeed.width;
-            canvas.height = videoFeed.height;
-        };
-
-        // Handle canvas click
-        canvas.addEventListener('click', (event) => {
-            const rect = canvas.getBoundingClientRect();
+        // Add click event listener to the video display element
+        document.getElementById('videoFeed').addEventListener('click', async (event) => {
+            const rect = event.target.getBoundingClientRect();
             const x = event.clientX - rect.left;
             const y = event.clientY - rect.top;
+            console.log(`Clicked pixel coordinates: x=${x}, y=${y}`);
 
-            console.log(`Clicked at: (${x}, ${y})`);
+            // Send coordinates to the backend
+            try {
+                const response = await fetch('http://127.0.0.1:5001/coordinates', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ x, y })
+                });
+                if (!response.ok) {
+                    console.error('Failed to send coordinates to the backend');
+                }
+            } catch (error) {
+                console.error('Error sending coordinates:', error);
+            }
+        });
 
-            // Send the coordinates to the back-end
-            fetch('/click_coordinates', {
+        // Function to send a keyboard character to the backend
+        async function sendKey(key) {
+            console.log(`Key pressed: ${key}`);
+            try {
+                const response = await fetch('http://127.0.0.1:5001/keypress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ key })
+                });
+                if (!response.ok) {
+                    console.error('Failed to send key to the backend');
+                }
+            } catch (error) {
+                console.error('Error sending key:', error);
+            }
+        }
+
+        // Add keypress event listener
+        document.addEventListener('keypress', (event) => {
+            sendKey(event.key);
+        });
+
+        // Joystick handling
+        const joystickContainer = document.querySelector('.joystick-container');
+        const joystickBase = document.querySelector('.joystick-base');
+        const joystickHandle = document.querySelector('.joystick-handle');
+        const amplitudeSlider = document.getElementById('amplitudeSlider');
+        const amplitudeDisplay = document.getElementById('amplitude');
+        const angleDisplay = document.getElementById('angle');
+        let isDragging = false;
+
+        // Initialize joystick position
+        function initializeJoystick() {
+            const rect = joystickBase.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const maxDistance = rect.width / 2;
+            const angle = Math.PI / 2; // 90 degrees in radians (bottom position)
+            
+            const borderX = centerX + Math.cos(angle) * maxDistance;
+            const borderY = centerY + Math.sin(angle) * maxDistance;
+            
+            joystickHandle.style.left = `${(borderX - rect.left)}px`;
+            joystickHandle.style.top = `${(borderY - rect.top)}px`;
+            angleDisplay.textContent = '180°';
+        }
+
+        // Call initialization when the page loads
+        window.addEventListener('load', initializeJoystick);
+
+        function updateJoystick(x, y) {
+            const rect = joystickBase.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            // Calculate angle starting from bottom (0 degrees)
+            const dx = x - centerX;
+            const dy = y - centerY;
+            const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+            // Convert to 0-360 range with 180 at bottom, increasing clockwise
+            const normalizedAngle = ((angle + 270) % 360);
+            
+            // Calculate position on the border
+            const maxDistance = rect.width / 2;
+            const borderX = centerX + Math.cos(angle * Math.PI / 180) * maxDistance;
+            const borderY = centerY + Math.sin(angle * Math.PI / 180) * maxDistance;
+            
+            // Update handle position to stay on border
+            joystickHandle.style.left = `${(borderX - rect.left)}px`;
+            joystickHandle.style.top = `${(borderY - rect.top)}px`;
+            
+            // Update displays
+            angleDisplay.textContent = `${Math.round(normalizedAngle)}°`;
+        }
+
+        // Add amplitude slider event listener
+        amplitudeSlider.addEventListener('input', () => {
+            amplitudeDisplay.textContent = amplitudeSlider.value;
+        });
+
+        // Add send button event listener
+        document.getElementById('sendJoystick').addEventListener('click', () => {
+            const angle = parseInt(angleDisplay.textContent);
+            sendJoystickValue(amplitudeSlider.value / 100, angle);
+        });
+
+        function sendJoystickValue(amplitude, angle) {
+            fetch('http://127.0.0.1:5001/joystick', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ x, y })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Server response:', data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ amplitude, angle })
+            }).catch(error => console.error('Error sending joystick value:', error));
+        }
+
+        joystickBase.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            updateJoystick(e.clientX, e.clientY);
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                updateJoystick(e.clientX, e.clientY);
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // Add touch support
+        joystickBase.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            isDragging = true;
+            const touch = e.touches[0];
+            updateJoystick(touch.clientX, touch.clientY);
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                updateJoystick(touch.clientX, touch.clientY);
+            }
+        });
+
+        document.addEventListener('touchend', () => {
+            isDragging = false;
         });
     </script>
 </body>
