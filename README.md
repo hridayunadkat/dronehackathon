@@ -2,8 +2,8 @@
 FE03C3
 4A5934
 
-# Live Share
-https://prod.liveshare.vsengsaas.visualstudio.com/join?95AEA4DFEE366DB16A856C7AAFBB4BA56F6E
+# Presentation Link
+https://docs.google.com/presentation/d/19lhjknHUNhzmgfsrCQJ9u_OrcttHPKrCrVJiifnT9IY/edit#slide=id.p1
 
 # Notion
 https://elastic-saw-874.notion.site/Robotics-Hackathon-in-San-Francisco-9a9faf87501248668cb834ee8efc8b81
