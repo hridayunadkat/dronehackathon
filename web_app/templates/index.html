@@ -55,6 +55,7 @@
         
         <div class="video-container">
             <img id="videoFeed" class="video-feed" alt="Video Feed">
+            <canvas id="clickCanvas" class="video-feed"></canvas>
         </div>
 
         <div class="controls text-center mt-4">
@@ -147,6 +148,39 @@
         document.getElementById('confirm').addEventListener('click', () => {
             alert('Recording confirmed!');
         });
+
+        const canvas = document.getElementById('clickCanvas');
+        const ctx = canvas.getContext('2d');
+        const videoFeed = document.getElementById('videoFeed');
+
+        // Resize canvas to match video feed dimensions
+        videoFeed.onload = () => {
+            canvas.width = videoFeed.width;
+            canvas.height = videoFeed.height;
+        };
+
+        // Handle canvas click
+        canvas.addEventListener('click', (event) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            console.log(`Clicked at: (${x}, ${y})`);
+
+            // Send the coordinates to the back-end
+            fetch('/click_coordinates', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ x, y })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Server response:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
     </script>
 </body>
-</html> 
+</html>
